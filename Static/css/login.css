@@ -1,0 +1,75 @@
+.userlogin{
+    padding: 10px 20px;
+    display: none;
+}
+.userlogin>p{
+    font-size: 17px;
+}
+.userlogin li{
+    list-style: none;
+    font-size: 14px;
+    margin: 20px 0;
+    text-align: left;
+}
+.userlogin li>input[type]{
+    height: 24px;
+    width: 200px;
+}
+.userlogin ul{
+    margin: 20px 0;
+}
+.userlogin li label{
+    display: inline-block;
+    width: 70px;
+    text-align: right;
+}
+#lastli>div{
+    vertical-align: middle;
+    float: left;
+    margin-left: 50px;
+    line-height: 30px;
+}
+#lastli>div>input{
+    position: relative;
+    top: 2px;
+    margin-right: 5px;
+}
+#lastli>button{
+    float: right;
+    vertical-align: middle;
+    margin-right: 50px;
+    width: 100px;
+    line-height: 30px;
+    outline: none;
+    background-color: #24bbe9;
+    color: #fff;
+    border-style: none;
+}
+#lastli{
+    position: relative;
+    padding: 10px 0;
+    margin: 0;
+}
+.error{
+    position: absolute;
+    left: 68px;
+    top:-13px;
+    color: red;
+    font-size: 13px;
+}
+#reloi{
+    padding: 50px;
+    line-height: 30px;
+    font-size: 14px;
+}
+#reloi>span:first-child{
+    float: left;
+    vertical-align: middle;
+}
+#reloi>span:first-child a{
+    color: #24bbe9;
+}
+#reloi>span:last-child{
+    float: right;
+    vertical-align: middle;
+}

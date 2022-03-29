@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设置菜单</title>
+    <link rel="stylesheet" href="/css/normalize.css">
+    <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <style>
+        li {
+            list-style: none;
+            padding-left: 10px;
+            font-size: 13px;
+            height: 30px;
+            margin: 10px 0;
+        }
+
+        .num {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            color: #fff;
+            background-color: #000;
+            text-align: center;
+            line-height: 20px;
+            vertical-align: middle;
+        }
+
+        .ipt {
+            display: inline-block;
+            width: 230px;
+            height: 30px;
+            line-height: 30px;
+            vertical-align: middle;
+            box-sizing: border-box;
+            padding-left: 5px;
+            border-style: none;
+            border-bottom: 1px solid #000;
+            background-color: transparent;
+            margin: 0 10px;
+            outline: none;
+        }
+
+        button {
+            width: 100px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            background-color: aquamarine;
+            border: 1px solid #000;
+            outline: none;
+            margin: 0 10px;
+        }
+
+        input[type=checkbox] {
+            position: relative;
+            top: 3px;
+            margin: 0 5px;
+        }
+
+        .update {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <p>设置菜单</p>
+    <button id="change">切换修改</button>
+    <ul>
+        <%for(let i=0;i<menu.length;i++){%>
+        <li><span class="num"><%=menu[i].id%></span><span class="ipt"><%=menu[i].name%></span><input disabled
+                class="ckbox" type="checkbox" <%=menu[i].status==1?'checked':''%>>hot
+            <button class="update">确认修改</button>
+        </li>
+        <%}%>
+    </ul>
+    <script>
+        $(function () {
+            let change = false;
+            $("#change").click(function () {
+                if (change) {
+                    $(".ipt").each(function () {
+                        $(this).replaceWith(`<span class='ipt'>${$(this).val()}</span>`);
+                    });
+                    $(".ckbox").attr("disabled", "disabled");
+                    change = false;
+                }
+                else {
+                    $(".ipt").each(function () {
+                        $(this).replaceWith(`<input class='ipt' type='text' value='${$(this).html()}'/>`);
+                    });
+                    $(".ckbox").removeAttr("disabled");
+                    change = true;
+                }
+                addhandle();
+            });
+            let oldindex = 0;
+            let oldvalue = null;
+            let ckvalue = null;
+            let que = false;
+            function addhandle() {
+                $(".ipt").each(function (index) {
+                    $(this).focus(function () {
+                        if (que == false && oldvalue != null) {
+                            $(".ipt").eq(oldindex).val(oldvalue);
+                            $(".ckbox").eq(oldindex).prop("checked", ckvalue);
+                        }
+                        oldvalue = $(this).val();
+                        $("li").eq(oldindex).find(".update").hide();
+                        $(".update").eq(index).show();
+                        oldindex = index;
+                    });
+                });
+            }
+            $(".ckbox").each(function (index) {
+                $(this).mouseup(function () {
+                    ckvalue = $(this).prop("checked");
+                });
+            });
+            $(".update").each(function (index) {
+                $(this).click(function () {
+                    let that = $(this);
+                    que = true;
+                    let name = $(".ipt").eq(index).val();
+                    let ck = $(".ckbox").eq(index).prop("checked");
+                    let id = $(".num").eq(index).html();
+                    $.ajax({
+                        method: "post",
+                        data: { id: id, name: name, ck: ck ? 1 : 0 },
+                        url: "http://localhost:8000/admin/updatetitle",
+                        success: function (res) {
+                            if (res == "success") {
+                                alert("修改成功！");
+                                that.hide();
+                            }
+                            else {
+                                alert("修改失败！");
+                            }
+                        }
+                    });
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

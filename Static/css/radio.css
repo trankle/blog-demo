@@ -1,0 +1,159 @@
+body{
+    background-color: #eeeeee;
+}
+.r_content{
+    position: relative;
+    margin: 120px auto 0;
+    width: 1180px;
+    min-height: 30px;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+.map{
+    font-size: 14px;
+}
+.map>i{
+    color: #148cc4;
+    vertical-align: middle;
+}
+.map>a{
+    color: #148cc4;
+    margin: 0 5px;
+    vertical-align: middle;
+}
+.rightbtn{
+    font-size: 13px;
+}
+.map>span{
+    margin-left: 3px;
+}
+.radioinfo{
+    width: auto;
+    min-height: 200px;
+}
+.radio_type{
+    padding: 20px;
+    border-bottom: 1px solid #d4d4d4;
+    font-size: 14px;
+    background-color: #fff;
+}
+.radio_type a{
+    padding: 0 10px;
+}
+.radio_c{
+    position: relative;
+    padding: 40px 500px 40px 20px;
+    background-color: #fff;
+}
+.radio_c{
+    text-indent: 20px;
+    font-size: 14px;
+    line-height: 23px;
+}
+.radio_c>img{
+    position: absolute;
+    right: 10px;
+    top: 20px;
+    height: 200px;
+}
+.radio-info-list{
+    position: relative;
+    margin: 20px 0;
+    overflow: hidden;
+}
+.radio-msg{
+    float: left;
+    position: relative;
+    width: 264px;
+    border-radius: 3px;
+    border-bottom: 1px solid  #e0dbdb;
+    margin: 10px 10px 8px 11px;
+    cursor: pointer;
+    box-shadow: 0 1px 3px #ccc;
+    overflow: hidden;
+    background-color: #fff;
+    transition: all .5s linear;
+}
+.radimg{
+    width: 264px;
+    height: 174px;
+}
+.title-h4{
+    padding: 0 10px;
+    line-height: 23px;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    margin: 5px 0;
+    font-weight: 200;
+    font-size: 15px;
+}
+.info{
+    padding: 5px 10px;
+    font-size: 13px;
+    line-height: 20px;
+    margin: 3px 0;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+}
+.radio-s{
+    margin: 5px 0;
+    padding: 0 10px;
+    overflow: hidden;
+}
+.radio-k{
+    float: left;
+    font-size: 13px;
+    color: #666;
+}
+.radio-p{
+    float: right;
+    font-size: 13px;
+    color: #ff0000;
+}
+.radio-page ul{
+    overflow: hidden;
+    margin: 15px 0;
+    padding: 0 10px;
+}
+.radio-page li{
+    list-style: none;
+    width: 30px;
+    height: 30px;
+    float: left;
+    margin: 0 3px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+}
+.radio-page li a{
+    display: block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+.active{
+    background-color: #3092ec !important;
+}
+.active>a{
+    color: #fff;
+}
+.a_active{
+    color:#ff0000;
+}
+.radio-msg:hover{
+    box-shadow: 0 0 5px #000;
+}
+.footer {
+    background-color: #fff;
+    padding: 20px 0;
+    margin: auto;
+    text-align: center;
+    font-size: 13px;
+}

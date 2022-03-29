@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人博客</title>
+    <link rel="stylesheet" href="/css/normalize.css">
+    <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/iconfont.css">
+    <link rel="stylesheet" href="/css/detail.css">
+</head>
+
+<body>
+    <!-- 加载每个页面的上导航 -->
+    <%- include("./topTitle.html",topNav,index,logo,user) %>
+    <div class="blogcontent">
+        <div class="blogleft">
+            <div class="content">
+                <p class="blogname"><%=bloginfo.bname%></p>
+                <p class="bloginfo">
+                    <span>编辑时间：<%=new Date(bloginfo.gotime).toLocaleString()%></span>
+                    <span>浏览量：<%=bloginfo.number%></span>
+                    <span>作者：<%=bloginfo.name%></span>
+                </p>
+                <div class="blogcontentinfo">
+                    <%-bloginfo.content%>
+                </div>
+                <div class="downup">
+                    <%if (upbloginfo){%>
+                    <p>上一篇：<a
+                            href="/detail?id=<%=upbloginfo.id%>&ck=<%=upbloginfo.type<5?3:2%>"><%=upbloginfo.name%></a>
+                    </p>
+                    <%}%>
+                            <%if (downbloginfo){%>
+                    <p>下一篇：<a
+                            href="/detail?id=<%=downbloginfo.id%>&ck=<%=downbloginfo.type<5?3:2%>"><%=downbloginfo.name%></a>
+                    </p>
+                    <%}%>
+                       
+                    </div>
+            </div>
+            <div class="tiujian_blog">
+                <div class="tui_title">或许你还喜欢一下内容：</div>
+                <div class="newsbloglist">
+                    <% for(let i=0;i<news.length;i++){%>
+                    <div class="blognews">
+                        <a href="/detail?id=<%=news[i].id%>">
+                            <div class="blogname"><%=news[i].name%></div>
+                            <div class="blogimage">
+                                <img src="<%=news[i].blogface%>" alt="">
+                            </div>
+                        </a>
+                    </div>
+                    <%}%>
+                </div>
+            </div>
+            <div class="comment-info">
+                <div class="comment-sendmsg">
+                    <div class="face-logo">
+                        <img src="image/facelogo.jpg" alt="">
+                    </div>
+                    <div class="send-msg">
+                        <textarea class="send-txt" placeholder="有什么想说的吗？"></textarea>
+                        <div class="send_btn">
+                            <i class="iconfont">&#xe8f6;</i>
+                            <span>表情</span>
+                            <%if(!userinfo){%>
+                                <a id="btnlogin" href="javaScript:void(0)">点击登录</a>
+                                <%}else{%>
+                                    <a id="sendmsg" href="javaScript:void(0)">点击发送</a>
+                                    <%}%>
+                            <script>
+                                //点击登录
+                                $(function (){
+                                    $("#btnlogin").click(function (){
+                                        $("#login").trigger("click");
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+                <div class="comment-list">
+                    <div class="comment-target">
+                        <span class="comment-num"><span id="commentnumber">5</span>条评论</span>
+                        <div class="comment-btn">
+                            <span class="comment-new">最新评论</span>
+                        <span class="comment-hot">最热评论</span>
+                        </div>
+                    </div>
+                  <div id="c-data">
+                    
+                  </div>
+                </div>
+                <script>
+                    // 加载完成之后获取ajax
+                    $(function () {
+                        //获取当前视频的评论  id
+                        let vid ="<%=bloginfo.bid%>";
+                        let ele = $("#c-data");
+                        let elenum = $("#commentnumber");
+                        let way = null;
+                        getcomment(vid, way);
+                        $(".comment-new").click(function () {
+                            way = "ctime";
+                            getcomment(vid, way);
+                        });
+                        //最热
+                        $(".comment-hot").click(function () {
+                            way = "zan";
+                            getcomment(vid, way);
+                        });
+                        function getcomment(id, way) {
+                            $.ajax({
+                                method: "post",
+                                data: { id: id,way:way},
+                                url: "http://localhost:8000/getblogcomment",
+                                success: function (res) {
+                                    elenum.html(res.length);
+                                    let str = "";
+                                    for (let i = 0; i < res.length; i++) {
+                                        let time = new Date(res[i].ctime); time = time.getFullYear()
+                                            + "年" + time.getMonth() + "月" + time.getDate() + "日" + " " + time.toLocaleTimeString(); str
+                                                += `<div class=" comment-data"><img class="user-img" src="${res[i].face}" alt="">
+                        <div>
+                            <div class="nickname">${res[i].name}：</div>
+                            <div class="user-content">${res[i].content}</div>
+                            <div class="time">${time} <span class="zan"><i class="iconfont zanbtn"
+                                        data-id="${res[i].cid}">&#xe90b;</i><span class="zaninfo"
+                                        data-zan="${res[i].zan}">${res[i].zan}</span></span></div>
+                        </div>
+                        <div class="sendmsg">
+                        </div>
+                </div>`;
+                                    }
+                                    ele.html(str);
+                                    for (let i = 0; i
+                                        < res.length; i++) {
+                                            let ss = ""; if (res[i].send.length != 0) {
+                                                for (let k = 0; k < res[i].send.length;
+                                                    k++) {
+                                                        let time = new Date(res[i].send[k].stime); time = time.getFullYear() + "年" + time.getMonth()
+                                                            + "月" + time.getDate() + "日" + " " + time.toLocaleTimeString(); ss += ` <img class="sendface"
+                    src="${ res[i].send[k].face}" />
+                <div class="nickname">${ res[i].send[k].name}：</div>
+                <div class="user-content">${ res[i].send[k].scon}</div>
+                <div class="time">${time}
+                    <span class="zan"><i class="iconfont vzanbtn" data-zan="${res[i].send[k].szan}"
+                            data-id="${res[i].send[k].sid}">&#xe90b;</i><span
+                            >${res[i].send[k].szan}</span></span>
+                </div>
+                `;
+                                                }
+                                                $(".sendmsg").eq(i).html(ss);
+                                            }
+                                    }
+
+                                    $(".zanbtn").each(function (index) {
+                                        $(this).on("click", function () {
+                                            let comid = $(this).attr("data-id");
+                                            let num = parseInt($(".zaninfo").eq(index).attr("data-zan"));
+                                            $.ajax({
+                                                method: "post",
+                                                data: { id: comid, zan: ++num, tab: null },
+                                                url: "http://localhost:8000/updateblogzan",
+                                                success: function (result) {
+                                                    if (result.affectedRows == 1) {
+                                                        getcomment(vid, way);
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    });
+                                    $(".vzanbtn").click(function () {
+                                        let scomid = $(this).attr("data-id");
+                                        let num = parseInt($(this).attr("data-zan"));
+                                        $.ajax({
+                                            method: "post",
+                                            data: { id: scomid, zan: ++num, tab: "send" },
+                                            url: "http://localhost:8000/updateblogzan",
+                                            success: function (result) {
+                                                if (result.affectedRows == 1) {
+                                                    getcomment(vid, way);
+                                                }
+                                            }
+                                        });
+                                    });
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            });
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="blogright">
+            <div class="search">
+                <form class="formsearch" action="/searchinfo" method="get">
+                    <input type="text" class="searchipt" name="search" placeholder="请输入需要的内容">
+                    <i id="subbtn" class="iconfont">&#xe69f;</i>
+                    <script>
+                        // 表单提交代码
+                        $("#subbtn").click(function () {
+                            if ($(".searchipt").val().length != 0) {
+                                $(".formsearch").submit();
+                            }
+                        });
+                    </script>
+                </form>
+            </div>
+            <div class="quick_a">
+                <ul>
+                    <li class="nav1"><a href="/author">关于我</a></li>
+                    <li class="nav2"><a href="/radio">视频教程</a></li>
+                    <li class="nav3"><a href="/blog">学无止境</a></li>
+                    <li class="nav4"><a href="/message">留言板</a></li>
+                </ul>
+            </div>
+            <div class="news_blog">
+                <p class="p_1">最新博客</p>
+                <ul>
+                    <%for(let i=0;i<newsblog.length;i++){%>
+                    <li><span class="<%=`sc${i+1}`%>"><%=i+1%></span><span class="blog_name"><a
+                                href="/detail?id=<%=newsblog[i].id%>"><%=newsblog[i].name%></a></span> <span
+                            class="blog_time"><%=new Date(newsblog[i].gotime).toLocaleDateString()%></span>
+                    </li>
+                    <%}%>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <strong>Design by</strong>：毛豆 备案号：<strong>ICP备12021335号-1</strong>
+    </div>
+</body>
+</html>

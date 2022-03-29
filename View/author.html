@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于作者</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/iconfont.css">
+    <link rel="stylesheet" href="/css/author.css">
+</head>
+
+<body>
+    <!-- 加载每个页面的上导航 -->
+    <%- include("./childpage/topTitle.html",topNav,index,user) %>
+    <div class="content">
+        <p class="map">
+            <i class="iconfont">&#xe65d;</i>
+            <a href="/">首页</a>
+            <i class="iconfont">&#xe673;</i>
+            <span>关于作者</span>
+        </p>
+        <div class=author>
+            <div class="authorleft">
+                <div class=detail>
+                    <h3>个人简介：</h3>
+                    <p><%=userinfo.detail%></p>
+                </div>
+                <img class="userphoto" src="<%=userinfo.photo%>" alt="">
+            </div>
+            <div class="authorright">
+                <div class="search">
+                    <form class="formsearch" action="/searchinfo" method="get">
+                        <input type="text" class="searchipt" name="search" placeholder="请输入需要的内容">
+                        <i id="subbtn" class="iconfont">&#xe69f;</i>
+                        <script>
+                            // 表单提交代码
+                            $("#subbtn").click(function () {
+                                if ($(".searchipt").val().length != 0) {
+                                    $(".formsearch").submit();
+                                }
+                            });
+                        </script>
+                    </form>
+                </div>
+                <div class="quick_a">
+                    <ul>
+                        <li class="nav1"><a href="/author">关于我</a></li>
+                        <li class="nav2"><a href="/radio">视频教程</a></li>
+                        <li class="nav3"><a href="/blog">学无止境</a></li>
+                        <li class="nav4"><a href="/message">留言板</a></li>
+                    </ul>
+                </div>
+                <div class=authorinfo>
+                    <p class="info">个人信息</p>
+                    <ul>
+                        <li>姓名：<%=userinfo.name%></li>
+                        <li>性别：<%=userinfo.sex%></li>
+                        <li>年龄：<%=userinfo.age%></li>
+                        <li>地址：<%=userinfo.address%></li>
+                        <li>工作：<%=userinfo.job%></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

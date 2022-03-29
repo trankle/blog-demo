@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人博客</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+    <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/search.css">
+</head>
+
+<body>
+    <!-- 加载每个页面的上导航 -->
+    <%- include("./topTitle.html",topNav,index,user) %>
+    <div class="blogcontent">
+        <div class="blogleft">
+            <div class="search">
+                <form class="formsearch" action="/searchinfo" method="get">
+                    <input type="text" class="searchipt" name="search" placeholder="请输入需要的内容">
+                    <i id="subbtn" class="iconfont">&#xe69f;</i>
+                    <script>
+                        // 表单提交代码
+                        $("#subbtn").click(function () {
+                            if ($(".searchipt").val().length != 0) {
+                                $(".formsearch").submit();
+                            }
+                        });
+                    </script>
+                </form>
+            </div>
+            <!-- 处理值  空 -->
+            <% if(bloglist.length==0){%>
+                <p class="p_not">没有找到你想要的内容！</p>
+            <%}else{%>
+            <%for(let i=0;i<bloglist.length;i++){%>
+            <a href="#">
+                <div class="mybloglist">
+                    <h5><%=bloglist[i].name%></h5>
+                    <div class="info">
+                        <div class="infoimg">
+                            <img src="<%=bloglist[i].blogface%>" alt="">
+                        </div>
+                        <div class="infodetail">
+                            <div class="userinfo">
+                                <img class="author" src="<%=bloglist[i].face%>" alt="">
+                                <span class="name"><%=bloglist[i].username%></span>
+                                <span class="time">发布时间：<%=new Date(bloglist[i].gotime).toLocaleString()%></span>
+                                <span class="type">分类：<%=bloglist[i].type%></span>
+                            </div>
+                            <div class="blogdetail">
+                                <%=bloglist[i].detail%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <%}%>
+            <%}%>
+        </div>
+        <div class="blogright">
+            <div class="quick_a">
+                <ul>
+                    <li class="nav1"><a href="#">关于我</a></li>
+                    <li class="nav2"><a href="#">视频教程</a></li>
+                    <li class="nav3"><a href="#">学无止境</a></li>
+                    <li class="nav4"><a href="#">留言板</a></li>
+                </ul>
+            </div>
+            <div class="call-user">
+                <p><span>联系毛豆:</span> <a class="call1" href="#"></a></p>
+                <p><span>加入QQ群:</span> <a class="call2" href="#"></a></p>
+            </div>
+            <!--最新推荐-->
+            <div class="u_click">
+                <p class="p_1">最新推荐</p>
+                <ul>
+                    <li><span class="sc1">1</span>如何建立个人博客？</li>
+                    <li><span class="sc2">2</span>一个网站的开发流程</li>
+                    <li><span class="sc3">3</span>浅谈：html5和html的区别</li>
+                    <li><span>4</span>前端MVVM框架之“Vue.js组件篇”</li>
+                    <li><span>5</span>如何才能写好一篇软文？</li>
+                    </li>
+                    <li><span>6</span>织梦dede常用的调用标签（个人总结）</li>
+                </ul>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div class="footer">
+        <strong>Design by</strong>：毛豆 备案号：<strong>ICP备12021335号-1</strong>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设置轮播</title>
+    <link rel="stylesheet" href="/css/normalize.css">
+    <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .title {
+            padding: 10px 0;
+            font-size: 13px;
+            padding-left: 10px;
+            box-shadow: 0 2px 10px #000 inset;
+        }
+
+        .meter {
+            width: 350px;
+        }
+
+
+        input[type=file] {
+            position: relative;
+            display: inline-block;
+            background: #D0EEFF;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: #1E88C7;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+        }
+        .upload{
+            margin: 20px 0;
+        }
+        #subbtn{
+            position: relative;
+            display: inline-block;
+            background: #D0EEFF;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: #1E88C7;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <p class="title">上传轮播图</p>
+    <div class="upload">
+        <form enctype="multipart/form-data">
+            <input type="file" id="list" multiple max="5"><br>
+            <button id="subbtn">上传</button>
+            <div>
+                <meter class="meter" value="0" max="100" min="0"></meter>
+            </div>
+        </form>
+    </div>
+    <script>
+        $(function () {
+            $("#subbtn").click(function () {
+                let files = $("#list")[0].files;
+                if (files.length != 5) {
+                    alert("上传图片个数5张！");
+                    return;
+                }
+                //设置  formData
+                let form = new FormData();
+                for (let i = 0; i < files.length; i++) {
+                    form.append("image", files[i]);
+                }
+                $.ajax({
+                    method: "post",
+                    data: form,
+                    url: "http://localhost:8000/admin/uploadbanner",
+                    contentType: false,
+                    processData: false,
+                    xhr: function () {
+                        //进度方法
+                        var xhr = $.ajaxSettings.xhr();
+                        if (xhr.upload) {
+                            xhr.upload.addEventListener("progress", progressBar, false);
+                            return xhr;
+                        }
+                    },
+                    success: function (res) {
+                        if (res == "success") {
+                            alert("上传成功！");
+                        }
+                    }
+                });
+            });
+            function progressBar(evt) {
+                var loaded = evt.loaded; //已经上传大小情况
+                var tot = evt.total; //附件总大小
+                var per = Math.floor(100 * loaded / tot); //已经上传的百分比
+                //这里可以绘制进度条
+                $(".meter").val(per)
+            }
+        });
+    </script>
+</body>
+
+</html>

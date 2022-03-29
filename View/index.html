@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <!-- 加载每个页面的上导航 -->
+    <%- include("./childpage/topTitle.html",topNav,index,logo,user) %>
+    <div class="conntentbg">
+        <div class="banner">
+            <div class="bannerlist">
+                <div class="bannerimg">
+                    <ul>
+                        <% for(let i=0;i<bannerinfo.length;i++){%>
+                        <li><img src="<%=bannerinfo[i].imageurl%>" alt="加载失败"></li>
+                        <%}%>
+                    </ul>
+                </div>
+                <div class="bannerca">
+                    <div class="animateceng"></div>
+                    <ul class="bannerbtn">
+                        <% for(let i=0;i<bannerinfo.length;i++){%>
+                        <li><img src="<%=bannerinfo[i].imageurl%>" alt="加载失败"></li>
+                        <%}%>
+                    </ul>
+                </div>
+            </div>
+            <div class="bannerinfo">
+                <div class="conntent">
+                   <%=logo.eveyDay%>
+                </div>
+                <img src="image/say-bg.3808a5f.jpg" alt="">
+            </div>
+        </div>
+        <!-- 热门推荐 -->
+        <div class="tui_list">
+            <p class="p_1">热门推荐</p>
+            <div class="box_info">
+                <div class="left_box">
+                   <a href="/detail?id=<%=newblog.id%>&ck=3">
+                    <span class="top_new">今日头条</span>
+                    <div class="newblogimg">
+                        <img src="<%=newblog.blogface%>" alt="">
+                    </div>
+                    <h4 class="newblogname" align="center"><%=newblog.name%></h4>
+                    <div class="newblogcontent">
+                        <%=newblog.detail%>
+                    </div>
+                   </a>
+                </div>
+                <div class="right_box">
+                    <div class="right_box_menu">
+                        <% for(let i=0;i<blogKaData.length;i++){%>
+                        <span class="<%=i==0?'bot_bor':''%>"><%=blogKaData[i].type%></span>
+                        <%}%>
+                        <i class="box_animate"></i>
+                    </div>
+                    <div class="box_animate_list">
+                        <div class="list_par">
+                            <% for(let k=0;k<blogKaData.length;k++){%>
+                        <div class="list_1">
+                            <div class="list_1_left">
+                                <% for(let i=0;i<blogKaData[k].blog.length;i++){%>
+                                <%if(i<2){%>
+                                <div class="list_1_left_t">
+                                    <h4> <%=blogKaData[k].blog[i].name%></h4>
+                                    <a href="/detail?id=<%=blogKaData[k].blog[i].id%>&ck=3"><img src="<%=blogKaData[k].blog[i].blogface%>" alt=""></a>
+                                </div>
+                                <%}%>
+                                        <%}%>
+                            </div>
+                            <div class="list_1_right">
+                                <ul class="rightkamen">
+                                    <% for(let i=2;i<blogKaData[k].blog.length;i++){%>
+                                    <li class="<%=i==2?'liheight':''%>">
+                                       <a href="/detail?id=<%=blogKaData[k].blog[i].id%>&ck=3"> <span class="listnum <%=i==2?'ck':''%>"><%=i-1%></span><span
+                                        class="listname"><%=blogKaData[k].blog[i].name%></span>
+                                    <div>
+                                        <%=blogKaData[k].blog[i].detail%>
+                                    </div></a>
+                                    </li>
+                                    <%}%>
+                                        </ul>
+                                    </div>
+                                </div>
+                            <%}%>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <script>
+                    //控制选项卡的
+                    $(".right_box_menu>span").on("mouseover", function () {
+                        console.log(1);
+                        $(this).addClass("bot_bor").siblings().removeClass("bot_bor");
+                    }).each(function (index) {
+                        $(this).on("click", function () {
+                            console.log($(this).position().left);
+                            $(".box_animate").css("transform", `translateX(${$(this).position().left}px)`);
+                            //控制下面的卡
+                            $(".list_par").css("transform", `translateX(${-index * 840}px)`);
+                        });
+                    })
+                    $(".rightkamen>li").mouseover(function () {
+                        $(this).addClass("liheight").siblings().removeClass("liheight").find(".listnum").removeClass("ck");
+                        $(this).find(".listnum").addClass("ck")
+                    });
+                </script>
+            </div>
+            <!-- 相关的文章或者博客 -->
+            <div class="blogcontent">
+                <div class="blogleft">
+                    <p class="p_1">文章推荐</p>
+                    <%for(let i=0;i<bloglist.length;i++){%>
+                    <a href="/detail?id=<%=bloglist[i].blogid%>&ck=3">
+                        <div class="mybloglist">
+                            <h5><%=bloglist[i].name%></h5>
+                            <%if(i==0){%>
+                            <span class="pos_t">荐</span>
+                            <%}else if(i==1){%>
+                            <span class="pos_b">值</span>
+                            <%}%>
+                                <div class="info">
+                                    <div class="infoimg">
+                                        <img src="<%=bloglist[i].blogface%>" alt="">
+                        </div>
+                        <div class="infodetail">
+                            <div class="userinfo">
+                                <img class="author" src="<%=bloglist[i].face%>" alt="">
+                                <span class="name"><%=bloglist[i].username%></span>
+                                <span class="time">发布时间：<%=new Date(bloglist[i].gotime).toLocaleString()%></span>
+                                <span class="type">分类：<%=bloglist[i].type%></span>
+                            </div>
+                            <div class="blogdetail">
+                                <%=bloglist[i].detail%>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            </a>
+            <%}%>
+                </div>
+                <div class="blogright">
+                    <p class="p_1">关注推荐</p>
+                    <div class="search">
+                        <form class="formsearch"  action="/searchinfo" method="get">
+                            <input type="text" class="searchipt" name="search" placeholder="请输入需要的内容">
+                            <i id="subbtn" class="iconfont">&#xe69f;</i>
+                            <script>
+                                // 表单提交代码
+                                $("#subbtn").click(function () {
+                                    if ($(".searchipt").val().length != 0) {
+                                        $(".formsearch").submit();
+                                    }
+                                });
+                            </script>
+                        </form>
+                    </div>
+                    <div class="quick_a">
+                        <ul>
+                            <li class="nav1"><a href="/author">关于我</a></li>
+                            <li class="nav2"><a href="/radio">视频教程</a></li>
+                            <li class="nav3"><a href="/blog">学无止境</a></li>
+                            <li class="nav4"><a href="/message">留言板</a></li>
+                        </ul>
+                    </div>
+                    <div class="call-user">
+                        <p><span>联系毛豆:</span> <a class="call1" href="http://wpa.qq.com/msgrd?v=3&uin=1121176958&site=qq&menu=yes"></a></p>
+                        <p><span>加入QQ群:</span> <a class="call2" href="http://wpa.qq.com/msgrd?v=3&uin=1121176958&site=qq&menu=yes"></a></p>
+                    </div>
+                    <!-- 点击排行 -->
+                    <div class="u_click">
+                        <p class="p_1">点击排行</p>
+                        <ul>
+                            <%for(let i=0;i<blogNumber.length;i++){%>
+            <li><span class="<%=`sc${i+1}`%>"><%=i+1%></span>
+                <a href="/detail?id=<%=blogNumber[i].id%>&ck=3"><%=blogNumber[i].name%></a>
+            </li>
+            <%}%>
+                        </ul>
+                    </div>
+                    <!-- 最新评论 -->
+                    <div class="user_p">
+                        <p class="p_1">最新评论</p>
+                        <ul>
+                            <%for(let i=0;i<comment.length;i++){%>
+            <li>
+                <img class="face" src="<%=comment[i].face%>" alt="">
+                <div class="user_p_list">
+                    <h5 class="user_name"><%=comment[i].name%>：</h5>
+                    <div class="user_s">
+                        <%=comment[i].content%>
+                    </div>
+                    <div class="user_p_time"><%=new Date(comment[i].ctime).toLocaleDateString()%></div>
+                </div>
+            </li>
+            <%}%>
+                        </ul>
+                    </div>
+                    <!-- 最新博客 -->
+                    <div class="news_blog">
+                        <p class="p_1">最新博客</p>
+                        <ul>
+                            <%for(let i=0;i<newsblog.length;i++){%>
+            <li><span class="blog_name"><a href="/detail?id=<%=newsblog[i].id%>&ck=3"><%=newsblog[i].name%></a></span> <span
+                    class="blog_time"><%=new Date(newsblog[i].gotime).toLocaleDateString()%></span>
+            </li>
+            <%}%>
+                        </ul>
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="footer">
+                <strong>Design by</strong>：毛豆 备案号：<strong>ICP备12021335号-1</strong>
+            </div>
+        </div>
+</body>
+
+</html>

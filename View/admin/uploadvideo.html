@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上传视频</title>
+    <link rel="stylesheet" href="/css/normalize.css">
+    <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .title {
+            padding: 10px 0;
+            font-size: 13px;
+            padding-left: 10px;
+            box-shadow: 0 2px 10px #000 inset;
+        }
+
+        .selectfile {
+            position: relative;
+            display: inline-block;
+            background: #D0EEFF;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: #1E88C7;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+            vertical-align: middle;
+        }
+
+        .selectfile>input {
+            position: absolute;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+
+        .btnsub {
+            position: relative;
+            display: inline-block;
+            background: #D0EEFF;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: #1E88C7;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+            vertical-align: middle;
+        }
+
+        .btnlist {
+            margin: 20px;
+        }
+
+        .list {
+            margin: 20px;
+            border: 1px solid #000;
+            background-color: #fff;
+            padding: 10px;
+        }
+
+        .list li {
+            padding-left: 5px;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        .menu{
+            margin-left: 30px;
+        }
+        .com{
+            font-size: 13px;
+            margin: 0 10px;
+            color: red;
+        }
+        .comerr{
+            font-size: 13px;
+            margin: 0 10px;
+            color: #4cdd13;
+        }
+        .meterlist{
+            width: 150px;
+            margin: 0 10px;
+        }
+        .name{
+            width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+
+<body>
+    <p class="title">上传视频</p>
+    <div class="btnlist">
+        <a href="javascript:void(0)" class="selectfile">选择视频文件
+            <input type="file" class="file" accept=".mp4" name="video" multiple>
+        </a>
+        <button class="btnsub">开始上传</button>
+
+    </div>
+    <script>
+        $(function () {
+            $(".file").change(function () {
+                let str = "";
+                for (let i = 0; i < $(this)[0].files.length; i++) {
+                    str += `<li class='upli'><span class="name">${$(this)[0].files[i].name}</span><meter class="meterlist" value="0" max="100"></meter></li>`;
+                }
+                $(".menu").html(str);
+            });
+
+            $(".btnsub").click(function () {
+                for (let i = 0; i < $(".file")[0].files.length; i++) {
+
+                    let form = new FormData();
+                    form.append("video", $(".file")[0].files[i]);
+                    $.ajax({
+                        method: "post",
+                        data: form,
+                        url: "http://localhost:8000/admin/uploadvideo",
+                        processData: false,
+                        contentType: false,
+                        xhr: function () {
+                            //进度方法
+                            var xhr = $.ajaxSettings.xhr();
+                            if (xhr.upload) {
+                                xhr.upload.addEventListener("progress", progressBar, false);
+                                return xhr;
+                            }
+                        },
+                        success: function (res) {
+                            if (res == "success") {
+                                $(".upli").eq(i).find("meter").replaceWith("<span class='com'>已上传！</span>");
+                            }
+                            else {
+                                $(".upli").eq(i).find("meter").replaceWith("<span class='comerr'>上传失败！</span>");
+                            }
+                        }
+                    });
+                    function progressBar(evt) {
+                        //实际上传大小
+                        let load = evt.loaded;
+                        //总大小
+                        let totle = evt.total;
+                        console.log(load,totle);
+                        $(".upli").eq(i).find("meter").val(load / totle * 100);
+                    }
+                }
+            });
+        });
+    </script>
+    <div class="list">
+        <ol class="menu"></ol>
+    </div>
+</body>
+
+</html>

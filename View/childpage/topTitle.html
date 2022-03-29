@@ -1,0 +1,55 @@
+<div class="top_title">
+    <div class="top_nav">
+        <img class="logo" src="<%=logo.logo%>" alt="">
+        <ul class="top_menu">
+            <% for(let i=0;i<topNav.length;i++){%>
+            <li>
+                <%if(topNav[i].status!=0){%>
+                <img class="hot" src="image/hot.gif" alt="">
+                <%}%>
+                    <a href="<%=topNav[i].action%>" class="<%=i==index?"defaultmenu":""%>"><%=topNav[i].name%></a>
+            </li>
+            <%}%>
+        </ul>
+        <%if(!userinfo){%>
+            <span class="login"><a id="login" href="javascript:void(0)">登录</a>/<a id="regest"
+                href="javascript:void(0)">注册</a></span>
+        <%}else{%>
+            <div class="userinfodata">
+                <img src="<%=userinfo.face%>" alt="">
+                <div class="userinfolist">
+                    <a href="#">消息</a>
+                    <a href="#">设置</a>
+                    <a href="/userclose">退出</a>
+                </div>
+            </div>
+        <%}%>
+        
+    </div>
+</div>
+<div class="bgceng">
+    <%-include("./login.html",user) %>
+            <%-include("./regest.html",user) %>
+    </div>
+    <link rel="stylesheet" href="/css/topTitle.css">
+    <script>
+        let useryesorno = "<%=useryesorno%>";
+        if (useryesorno && useryesorno == "no") {
+            $(".bgceng").show();
+            $(".userlogin").show();
+            $(".userregest").hide();
+        }
+        //点击登录和注册
+        $(() => {
+            $("#login").click(() => {
+                $(".bgceng").show();
+                $(".userlogin").show();
+                $(".userregest").hide();
+            });
+            $("#regest").click(() => {
+                $(".bgceng").show();
+                $(".userregest").show();
+                $(".userlogin").hide();
+            });
+        });
+    </script>

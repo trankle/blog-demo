@@ -1,0 +1,34 @@
+<div class="userlogin">
+    <p>登录<%=user.name%>博客网站</p>
+    <form action="/userlogin" method="POST">
+        <ul>
+            <li>
+                <label for="">邮箱：</label><input name="email" type="text" value="<%=defaultinfo.email%>" placeholder="输入邮箱">
+            </li>
+            <li>
+               <label for="">密码：</label><input name="pwd" type="password" value="<%=defaultinfo.pwd%>" placeholder="输入密码">
+            </li>
+            <li id="lastli">
+                <%if(useryesorno=='no'){%>
+                    <span class="error">账号或者密码错误！</span>
+                <%}%>
+                <div>
+                    <input name="rember" type="checkbox">记住我
+                </div>
+                <button>登录</button>
+            </li>
+            <li id="reloi">
+                <span>没有账号 <a id="regestinfo" href="javascript:void(0)">注册</a></span>
+            </li>
+        </ul>
+    </form>
+    <script>
+        $(function (){
+            $("#regestinfo").click(function (){
+                $(".userregest").show();
+                $(".userlogin").hide();
+            });
+        });
+    </script>
+</div>
+<link rel="stylesheet" href="./css/login.css">

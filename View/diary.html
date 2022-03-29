@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时间轴</title>
+    <link rel="stylesheet" href="/css/normalize.css">
+    <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/iconfont.css">
+    <link rel="stylesheet" href="/css/diary.css">
+</head>
+
+<body>
+    <!-- 加载每个页面的上导航 -->
+    <%- include("./childpage/topTitle.html",topNav,index,user) %>
+    <div class="content">
+        <p class="map">
+            <i class="iconfont">&#xe65d;</i>
+            <a href="/">首页</a>
+            <i class="iconfont">&#xe673;</i>
+            <span>时间轴</span>
+        </p>
+        <div class="timelist">
+            <ul class=nav>
+            </ul>
+            <p class="animatelist">
+
+            </p>
+        </div>
+    </div>
+    <script>
+        // 使用瀑布流加载数据   也是分页
+        $(function () {
+            let nowpage = 0;
+            let pagenum = 10;
+            let time = null;
+            getblog();
+            $(window).on("scroll", function () {
+                if ($("body").height() <= $(this).scrollTop() + $(this).height() + 20) {
+                    //节流
+                    if (!time) {
+                        $(".animatelist").append(' <img class="animate" src="/image/timg.gif" alt="">');
+                        time = setTimeout(function () {
+                            ++nowpage;
+                            clearTimeout(time);
+                            time = null;
+                            getblog();
+                        }, 1000);
+                    }
+                }
+            });
+            function getblog() {
+                $.ajax({
+                    method: "post",
+                    data: { nowpage: nowpage, pagenum: pagenum },
+                    url: "http://127.0.0.1:8000/getlist",
+                    success: function (res) {
+                        if (res.length == 0) {
+                            $(window).off("scroll");
+                            $(".animate").replaceWith("<span>没有更多数据加载！</span>");
+                            return;
+                        }
+                        $(".animate").remove();
+                        let str = "";
+                        for (let i = 0; i < res.length; i++) {
+                            let time = new Date(res[i].gotime);
+                            time = time.getFullYear() + "年" + time.getMonth() + "月" + time.getDate() + "日"
+                            str += `<li><i></i><a href="/detail?id=${res[i].id}&ck=${res[i].type<5?3:2}">${res[i].name}</a><span>${time}</span></li>`;
+                        };
+                        $(".nav").append(str);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

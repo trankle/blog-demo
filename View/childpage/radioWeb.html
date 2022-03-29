@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频观看--<%=info.name%></title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" href="css/radioweb.css">
+</head>
+
+<body>
+    <!-- 加载每个页面的上导航 -->
+    <%- include("./topTitle.html",topNav,index,user) %>
+    <div class="radio_data">
+        <div class="radiolist">
+            <div class="radio-name"><%=info.name%></div>
+            <div class="video">
+                <video preload="preload" class="data-info-video" src="<%=info.url%>"></video>
+                <div class="btn-comment">
+                    <div class="btnstart">
+                        <i class="iconfont">&#xe922;</i>
+                    </div>
+                    <% if(info.isfree==1&&info.islook=="yes"){%>
+                    <span class="rad-info">可免费观看10分钟，VIP可观看完整视频 <i class="iconfont">&#xe928;</i></span>
+                    <%}%>
+                    <script>
+                        //可以检测该视频是否免费观看
+                        let islook="<%=info.islook%>";
+                        let isfree="<%=info.isfree%>";
+                        if(islook=="yes"&&isfree==1)
+                        {
+                            console.log("可以免费试看");
+                            //计时
+                            let now=new Date().getTime();
+                            let time=null;
+                            let inter=null;
+                            inter=setInterval(function (){
+                                time=new Date().getTime();
+                                if(time-now>10*60*1000)
+                                {
+                                    clearInterval(inter);
+                                    console.log("收费");
+                                }
+                            },1000);
+                        }
+                        else{
+                            console.log("收费");
+                        }
+                    </script>
+                </div>
+            </div>
+            <div class="tiujian_blog">
+                <div class="tui_title">或许你还喜欢一下内容：</div>
+                <div class="newsbloglist">
+                    <% for(let i=0;i<news.length;i++){%>
+                    <div class="blognews">
+                        <a href="/detail?id=<%=news[i].id%>">
+                            <div class="blogname"><%=news[i].name%></div>
+                            <div class="blogimage">
+                                <img src="<%=news[i].blogface%>" alt="">
+                            </div>
+                        </a>
+                    </div>
+                    <%}%>
+                </div>
+            </div>
+            <div class="comment-info">
+                <div class="comment-sendmsg">
+                    <div class="face-logo">
+                        <img src="image/facelogo.jpg" alt="">
+                    </div>
+                    <div class="send-msg">
+                        <textarea class="send-txt" placeholder="有什么想说的吗？"></textarea>
+                        <div class="send_btn">
+                            <i class="iconfont">&#xe8f6;</i>
+                            <span>表情</span>
+                            <%if(!userinfo){%>
+                                <a id="btnlogin" href="javaScript:void(0)">点击登录</a>
+                                <%}else{%>
+                                    <a id="sendmsg" href="javaScript:void(0)">点击发送</a>
+                                    <%}%>
+                            <script>
+                                //点击登录
+                                $(function (){
+                                    $("#btnlogin").click(function (){
+                                        $("#login").trigger("click");
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+                <div class="comment-list">
+                    <div class="comment-target">
+                        <span class="comment-num"><span id="commentnumber">5</span>条评论</span>
+                        <div class="comment-btn">
+                            <span class="comment-new">最新评论</span>
+                        <span class="comment-hot">最热评论</span>
+                        </div>
+                    </div>
+                  <div id="c-data">
+                    
+                  </div>
+                </div>
+                <script>
+                    // 加载完成之后获取ajax
+                    $(function () {
+                        //获取当前视频的评论  id
+                        let vid = "<%=info.id%>";
+                        let ele = $("#c-data");
+                        let elenum = $("#commentnumber");
+                        let way = null;
+                        getcomment(vid, way);
+                        $(".comment-new").click(function () {
+                            way = "ctime";
+                            getcomment(vid, way);
+                        });
+                        //最热
+                        $(".comment-hot").click(function () {
+                            way = "zan";
+                            getcomment(vid, way);
+                        });
+                        function getcomment(id, way) {
+                            $.ajax({
+                                method: "post",
+                                data: { id: id, way: way },
+                                url: "http://localhost:8000/getvideocomment",
+                                success: function (res) {
+                                    elenum.html(res.length);
+                                    let str = "";
+                                    for (let i = 0; i < res.length; i++) {
+                                        let time = new Date(res[i].ctime); time = time.getFullYear()
+                                            + "年" + time.getMonth() + "月" + time.getDate() + "日" + " " + time.toLocaleTimeString(); str
+                                                += `<div class=" comment-data"><img class="user-img" src="${res[i].face}" alt="">
+                        <div>
+                            <div class="nickname">${res[i].name}：</div>
+                            <div class="user-content">${res[i].content}</div>
+                            <div class="time">${time} <span class="zan"><i class="iconfont zanbtn"
+                                        data-id="${res[i].cid}">&#xe90b;</i><span class="zaninfo"
+                                        data-zan="${res[i].zan}">${res[i].zan}</span></span></div>
+                        </div>
+                        <div class="sendmsg">
+                        </div>
+                </div>`;
+                                    }
+                                    ele.html(str);
+                                    for (let i = 0; i
+                                        < res.length; i++) {
+                                            let ss = ""; if (res[i].send.length != 0) {
+                                                for (let k = 0; k < res[i].send.length;
+                                                    k++) {
+                                                        let time = new Date(res[i].send[k].vtime); time = time.getFullYear() + "年" + time.getMonth()
+                                                            + "月" + time.getDate() + "日" + " " + time.toLocaleTimeString(); ss += ` <img class="sendface"
+                    src="${ res[i].send[k].face}" />
+                <div class="nickname">${ res[i].send[k].name}：</div>
+                <div class="user-content">${ res[i].send[k].content}</div>
+                <div class="time">${time}
+                    <span class="zan"><i class="iconfont vzanbtn" data-zan="${res[i].send[k].vzan}"
+                            data-id="${res[i].send[k].sid}">&#xe90b;</i><span
+                            >${res[i].send[k].vzan}</span></span>
+                </div>
+                `;
+                                                }
+                                                $(".sendmsg").eq(i).html(ss);
+                                            }
+                                    }
+
+                                    $(".zanbtn").each(function (index) {
+                                        $(this).on("click", function () {
+                                            let comid = $(this).attr("data-id");
+                                            let num = parseInt($(".zaninfo").eq(index).attr("data-zan"));
+                                            $.ajax({
+                                                method: "post",
+                                                data: { id: comid, zan: ++num, tab: null },
+                                                url: "http://localhost:8000/updatezan",
+                                                success: function (result) {
+                                                    if (result.affectedRows == 1) {
+                                                        getcomment(vid, way);
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    });
+                                    $(".vzanbtn").click(function () {
+                                        let scomid = $(this).attr("data-id");
+                                        let num = parseInt($(this).attr("data-zan"));
+                                        $.ajax({
+                                            method: "post",
+                                            data: { id: scomid, zan: ++num, tab: "send" },
+                                            url: "http://localhost:8000/updatezan",
+                                            success: function (result) {
+                                                if (result.affectedRows == 1) {
+                                                    getcomment(vid, way);
+                                                }
+                                            }
+                                        });
+                                    });
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            });
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="xxradio">
+            <div class="search">
+                <form class="formsearch" action="/searchinfo" method="get">
+                    <input type="text" class="searchipt" name="search" placeholder="请输入需要的内容">
+                    <i id="subbtn" class="iconfont">&#xe69f;</i>
+                    <script>
+                        // 表单提交代码
+                        $("#subbtn").click(function () {
+                            if ($(".searchipt").val().length != 0) {
+                                $(".formsearch").submit();
+                            }
+                        });
+                    </script>
+                </form>
+            </div>
+            <div class="classlist">
+                <p class="list_title"><%=info.radiotype%>初级课程</p>
+                <div class="list">
+                    <%for(let i=0;i<videolist.length;i++){%>
+                    <%if(videolist[i].jibie==0){%>
+                    <a class="<%=info.id==videolist[i].id&&info.jibie==0?'addcolor':''%>"
+                        href="/radioweb?id=<%=videolist[i].id%>">
+                        <%if(videolist[i].islook=="yes"){%>
+                        <span>试看</span>
+                        <%}%>
+                                <%=videolist[i].name.match(/[^\(\)]+(?=\))/g)%>
+                    </a>
+                    <%}%>
+                    <%}%>
+                </div>
+                <p class="list_title"><%=info.radiotype%>高级课程</p>
+                <div class="list">
+                    <%for(let i=0;i<videolist.length;i++){%>
+                    <%if(videolist[i].jibie==1){%>
+                    <a class="<%=info.id==videolist[i].id&&info.jibie==1?'addcolor':''%>"
+                        href="/radioweb?id=<%=videolist[i].id%>">
+                        <%if(videolist[i].islook=="yes"){%>
+                        <span>试看</span>
+                        <%}%>
+                                <%=videolist[i].name.match(/[^\(\)]+(?=\))/g)%>
+                    </a>
+                    <%}%>
+                    <%}%>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="footer">
+        <strong>Design by</strong>：毛豆 备案号：<strong>ICP备12021335号-1</strong>
+    </div>
+</body>
+
+</html>

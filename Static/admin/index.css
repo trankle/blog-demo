@@ -1,0 +1,73 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+html,body{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #4ec5f5;
+    overflow: hidden;
+}
+.adminlogin{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 320px;
+    height: 220px;
+    background-color: #fff;
+    border-radius: 20px;
+    text-align: center;
+    padding: 10px 0;
+}
+.adminlogin>p{
+    font-weight: 700;
+    font-size: 20px;
+}
+.nav{
+    padding: 10px 20px;
+}
+.nav>li{
+    list-style: none;
+    margin: 20px 0;
+    font-size: 14px;
+}
+.nav>li:not(.btn) input{
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
+    box-sizing: border-box;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #c0c0c0;
+}
+.btn>div{
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 15px;
+}
+.btn>div input{
+    position: relative;
+    top: 3px;
+}
+.btn>input{
+    width: 100px;
+    height: 30px;
+    vertical-align: middle;
+    margin: 0 15px;
+}
+.btn{
+    position: relative;
+    margin-top: 40px !important;
+}
+.error{
+    position: absolute;
+    color: red;
+    font-size: 13px;
+    left: 60px;
+    top: -30px;
+}

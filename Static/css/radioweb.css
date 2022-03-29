@@ -1,0 +1,361 @@
+body{
+    background-color: #eeeeee;
+}
+.radio_data{
+    position: relative;
+    margin: 0 auto;
+    top: 110px;
+    width: 1180px;
+    overflow: hidden;
+}
+.radiolist{
+    float: left;
+    width: 900px;
+    min-height: 200px;
+    background-color: #fff;
+    box-sizing: border-box;
+    padding: 10px;
+}
+.radio-name{
+    text-align: center;
+    font-size: 20px;
+    color: #2f71eb;
+    padding: 5px 0;
+}
+.video{
+    position: relative;
+    width: 880px;
+    height: 500px;
+}
+.data-info-video{
+    width: 880px;
+    height: 500px;
+    background-color: #000;
+}
+.btn-comment{
+    position: absolute;
+    width: 880px;
+    height: 500px;
+    left: 0;
+    top: 0;
+    z-index: 2;
+}
+.btnstart{
+    position: absolute;
+    bottom: 80px;
+    left: 20px;
+    display: block;
+    width: 60px;
+    height: 60px;
+    background-color: #fff;
+    line-height: 60px;
+    border-radius: 50%;
+}
+.btnstart>i{
+    position: absolute;
+    left: 18px;
+    color: #000;
+    font-size: 30px;
+}
+.rad-info{
+    position: absolute;
+    bottom: 40px;
+    left: 20px;
+    display: inline-block;
+    background-color: #333333;
+    color: #fff;
+    font-size: 14px;
+    padding: 5px 15px;
+    border-radius: 15px;
+}
+.rad-info>i{
+    margin-left: 10px;
+}
+.rad-info>i:hover{
+    color: #666666;
+    cursor: pointer;
+}
+.tiujian_blog{
+    margin: 15px 0;
+}
+.tui_title{
+    color: #ec2a23;
+    font-size: 14px;
+}
+.newsbloglist{
+    margin-top: 20px;
+    overflow: hidden;
+    background-color: #eee;
+}
+.blognews{
+    float: left;
+    width: 210px;
+    margin: 10px 5px;
+    background-color: #fff;
+}
+.blognews>a{
+    display: block;
+    width: 210px;
+}
+.blogname{
+    text-align: center;
+    line-height: 30px;
+    font-size: 13px;
+}
+.blogimage>img{
+    width: 100%;
+    height: 100%;
+}
+.xxradio{
+    float: right;
+    width: 260px;
+    min-height: 50px;
+}
+
+.search {
+    position: relative;
+    background-color: #fff;
+    padding:10px 20px;
+    margin: 0 0 20px;
+    text-align: center;
+}
+
+.search input {
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #ccc;
+    padding: 0 35px 0 10px;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+::-webkit-input-placeholder {
+    color: #ccc;
+    font-size: 14px;
+}
+
+.search i {
+    cursor: pointer;
+    position: absolute;
+    right: 35px;
+    top: 15px;
+    font-size: 20px;
+    color: #000;
+}
+.classlist{
+    padding: 5px 10px;
+    background-color: #fff;
+}
+.list_title{
+    text-align: center;
+    font-size: 15px;
+}
+.list{
+    font-size: 0;
+}
+.list>a{
+    position: relative;
+    display: inline-block;
+    width: 100px;
+    margin: 5px 10px;
+    font-size: 14px;
+    line-height: 30px;
+    text-align: center;
+    border: 1px solid #b3b3b3;
+    box-sizing: border-box;
+}
+.list>a>span{
+    display: block;
+    position: absolute;
+    right: -15px;
+    top: -8px;
+    padding:0 4px;
+    color: #fff;
+    font-size: 12px;
+    line-height: 20px;
+    border-radius: 4px;
+    background-color: #2eb2f0;
+}
+.addcolor{
+    border-color: #ec2a23 !important;
+    color: #ec2a23;
+}
+
+
+.comment-info{
+    width: auto;
+    height: auto;
+}
+.comment-sendmsg{
+    position: relative;
+    background-color: #fff;
+    box-sizing: border-box;
+    padding: 10px 10px 10px 70px;
+}
+.face-logo{
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #333;
+}
+.face-logo>img{
+    width: 100%;
+    height: 100%;
+}
+.send-msg{
+    width: auto;
+    height: 200px;
+    border: 1px solid #bebebe;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.send-txt{
+    width: 100%;
+    height: 160px;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 14px;
+    resize: none;
+}
+.send_btn{
+    height: 40px;
+    border-top: 1px solid #bebebe;
+    line-height:39px;
+    font-size: 0px;
+    padding-left: 15px;
+    color: #333;
+}
+.send_btn>i{
+    font-size: 25px;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+.send_btn>span{
+    vertical-align: middle;
+    font-size: 15px;
+}
+.send_btn>a{
+    vertical-align: middle;
+    font-size: 15px;
+    float: right;
+    margin-right: 10px;
+}
+.comment-list{
+    height: auto;
+}
+.comment-target{
+    padding: 20px 0;
+    border-bottom: 1px solid #bbbbbb;
+}
+.comment-num{
+    display: inline-block;
+    padding: 3px 8px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    color: #333;
+    font-size: 14px;
+    line-height: 20px;
+    background-color: #f7f7f7;
+    vertical-align: middle;
+}
+.comment-num>span{
+    color: #ec2a23;
+    margin: 0 2px;
+}
+.comment-new{
+    display: inline-block;
+    padding: 3px 8px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    color: #e626cc;
+    font-size: 14px;
+    line-height: 20px;
+    background-color: #f7f7f7;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.comment-hot{
+    display: inline-block;
+    padding: 3px 8px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    color: #f79a22;
+    font-size: 14px;
+    line-height: 20px;
+    background-color: #f7f7f7;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.comment-btn{
+    float: right;
+    margin-right: 10px;
+}
+.comment-data{
+    position: relative;
+    height: auto;
+    box-sizing: border-box;
+    padding: 10px 10px 10px 70px;
+    border-bottom: 1px solid #bbbbbb;
+}
+.user-img{
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+}
+.nickname{
+    font-size: 14px;
+    font-weight: 700;
+    color: #ec2a23;
+}
+.user-content{
+    margin: 4px 0;
+    font-size: 14px;
+    line-height: 22px;
+}
+.time{
+    font-size: 13px;
+    color: #6b6969;
+    margin: 5px 0;
+}
+.zan{
+    margin: 0 5px;
+    cursor: pointer;
+}
+.zan>i{
+    margin: 0 3px;
+}
+.sendmsg{
+    border-top: 1px solid #bbb;
+    height: auto;
+    position: relative;
+    box-sizing: border-box;
+    padding: 10px 10px 10px 60px;
+}
+.sendface{
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+}
+.footer {
+    position: relative;
+    top: 120px;
+    background-color: #fff;
+    padding: 20px 0;
+    margin: auto;
+    text-align: center;
+    font-size: 13px;
+}

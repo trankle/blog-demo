@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网站模板</title>
+    <link rel="stylesheet" href="/css/normalize.css">
+    <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/iconfont.css">
+    <link rel="stylesheet" href="/css/complate.css">
+</head>
+
+<body>
+    <!-- 加载每个页面的上导航 -->
+    <%- include("./childpage/topTitle.html",topNav,index,user) %>
+    <div class="r_content">
+        <p class="map">
+            <i class="iconfont">&#xe6f8;</i>
+            <a href="/">首页</a>
+            <i class="iconfont rightbtn">&#xe730;</i>
+            <%if(map){%>
+                <span><a href="/complate">网站模板</a></span>
+                <span class="add_map">
+                    <i class="iconfont rightbtn">&#xe730;</i>
+                    <%=map%>
+                </span>
+            <%}else{%>
+                <span>网站模板</span>
+            <%}%>
+        </p>
+        <div class="complate_title">
+            <a class="a_map" href="/complate/one">个人博客模板</a>
+            <a class="a_map" href="/complate/two">企业系统模板</a>
+            <a class="a_map" href="/complate/three">管理系统模板</a>
+        </div>
+        <div class="blogcontent">
+            <div class="blogleft">
+                <%if(bloglist.length){%>
+                    <% for(let i=0;i<bloglist.length;i++){%>
+                        <a href="/detail?id=<%=bloglist[i].blogid%>&ck=2">
+                            <div class="mybloglist">
+                                <h5><%=bloglist[i].name%></h5>
+                                <div class="info">
+                                    <div class="infoimg">
+                                        <img src="<%=bloglist[i].blogface%>" alt="">
+                                    </div>
+                                    <div class="infodetail">
+                                        <div class="userinfo">
+                                            <img class="author" src="<%=bloglist[i].face%>" alt="">
+                                            <span class="name"><%=bloglist[i].username%></span>
+                                            <span class="time">发布时间：<%=new Date(bloglist[i].gotime).toLocaleString()%></span>
+                                            <span class="type">分类：<%=bloglist[i].type%></span>
+                                        </div>
+                                        <div class="blogdetail">
+                                            <%=bloglist[i].detail%>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <%}%>
+                <%}else{%>
+                    <p class="blog_no">暂无相关博客！</p>
+                <%}%>
+            </div>
+            <div class="blogright">
+                <div class="search">
+                    <form class="formsearch" action="/searchinfo" method="get">
+                        <input type="text" class="searchipt" name="search" placeholder="请输入需要的内容">
+                        <i id="subbtn" class="iconfont">&#xe69f;</i>
+                        <script>
+                            // 表单提交代码
+                            $("#subbtn").click(function () {
+                                if ($(".searchipt").val().length != 0) {
+                                    $(".formsearch").submit();
+                                }
+                            });
+                        </script>
+                    </form>
+                </div>
+                <div class="quick_a">
+                    <ul>
+                        <li class="nav1"><a href="/author">关于我</a></li>
+                        <li class="nav2"><a href="/radio">视频教程</a></li>
+                        <li class="nav3"><a href="/blog">学无止境</a></li>
+                        <li class="nav4"><a href="/message">留言板</a></li>
+                    </ul>
+                </div>
+                <div class="news_blog">
+                    <p class="p_1">最新博客</p>
+                    <ul>
+                        <%for(let i=0;i<newsblog.length;i++){%>
+                        <li><span class="<%=`sc${i+1}`%>"><%=i+1%></span><span class="blog_name"><a
+                                    href="/detail?id=<%=newsblog[i].id%>&ck=2"><%=newsblog[i].name%></a></span> <span
+                                class="blog_time"><%=new Date(newsblog[i].gotime).toLocaleDateString()%></span>
+                        </li>
+                        <%}%>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <strong>Design by</strong>：毛豆 备案号：<strong>ICP备12021335号-1</strong>
+    </div>
+    
+</body>
+
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频设置</title>
+    <link rel="stylesheet" href="/css/normalize.css">
+    <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .title {
+            padding: 10px 0;
+            font-size: 13px;
+            padding-left: 10px;
+            box-shadow: 0 2px 10px #000 inset;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .box {
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .boxleft {
+            flex: 1;
+            border-right: 1px solid #1fabfc;
+            box-sizing: border-box;
+            overflow-y: scroll;
+        }
+        .boxleft li{
+            list-style: none;
+            font-size: 14px;
+            margin: 5px 0;
+            padding-left: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+        }
+
+        .boxright {
+            flex: 4;
+        }
+        .btncolor{
+            color: tomato;
+        }
+        .boxright>ul{
+            display: block;
+            width: 40%;
+            margin: 15px auto;
+        }
+        .boxright li{
+            list-style: none;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+        .boxright li span{
+            display: inline-block;
+            width: 100px;
+            text-align: right;
+        }
+        .content{
+            width: 200px;
+            height: 150px;
+            resize: none;
+        }
+        .btnupdate{
+            display: block;
+            margin: 0 auto;
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <p class="title">视频设置</p>
+    <div class="box">
+        <div class="boxleft">
+            <ul>
+                <%for(let i=0;i<list.length;i++){%>
+                <li class="libtn" data-id="<%=list[i].id%>"><%=list[i].name%></li>
+                <%}%>
+            </ul>
+        </div>
+        <div class="boxright">
+            <ul>
+                <li><span>是否免费：</span><input class="isfree" type="radio" value="0" name="free">是<input class="isfree" type="radio" value="1" name="free">否</li>
+                <li><span>单价：</span><input class="price"  type="text"></li>
+                <li><span>类别：</span>
+                <select id="type">
+                    <option>-请选择类别-</option>
+                    <%for(let i=0;i<type.length;i++){%>
+                       <option class="optionlist" value="<%=type[i].id%>"><%=type[i].radiotype%></option>
+                    <%}%>
+                </select>
+                </li>
+                <li><span>初高级:</span>
+                    <select id="jibie">
+                        <option>-请选择级别-</option>
+                        <option value="0">-初级-</option>
+                        <option value="1">-高级-</option>
+                    </select>
+                </li>
+                <li><span>是否免费观看：</span><input class="islook" type="radio" value="yes" name="look">是<input class="islook" type="radio" value="no" name="look">否</li>
+                <li><span>简介：</span>
+                <textarea class="content"></textarea>
+                </li>
+            </ul>
+            <button class="btnupdate">修改</button>
+        </div>
+    </div>
+    <script>    
+        $(function (){
+            let id=null;
+            $(".libtn").click(function (){
+                $(this).addClass("btncolor").siblings().removeClass("btncolor");
+                id=$(this).attr("data-id");
+                $.ajax({
+                    method:"post",
+                    data:{id:id},
+                    url:"http://localhost:8000/admin/getvideoinfo",
+                    success:function (res){
+                        if(res.isfree==0)
+                        {
+                            $(".isfree").eq(0).prop("checked",true);
+                        }
+                        else{
+                            $(".isfree").eq(1).prop("checked",true);
+                        }
+                        $(".price").val(res.price);
+                        if(res.jibie==0)
+                        {
+                            $("#jibie").find("option").eq(1).prop("selected",true)
+                        }
+                        else{
+                            $("#jibie").find("option").eq(2).prop("selected",true)
+                        }
+                        if(res.islook=="yes")
+                        {
+                            $(".islook").eq(0).prop("checked",true);
+                        }
+                        else{
+                            $(".islook").eq(1).prop("checked",true);
+                        }
+                        $(".content").val(res.detail);
+                        $(".optionlist").each(function (){
+                            if($(this).val()==res.type)
+                            {
+                                $(this).prop("selected",true);
+                            }
+                        });
+                    }
+                });
+            });
+            $(".btnupdate").click(function (){
+                if(id==null){
+                    alert("没有选择视频！");
+                    return;
+                }
+                let isfree= $(".isfree:checked").val();
+                let price=  $(".price").val();
+                let type=$("#type").val();
+                let jibie=$("#jibie").val();
+                let islook=$(".islook:checked").val();
+                let detail=$(".content").val();
+                $.ajax({
+                    method:"post",
+                    data:{id:id,isfree:isfree,price:price,type:type,jibie:jibie,islook:islook,detail:detail},
+                    url:"http://localhost:8000/admin/updatevideoinfo",
+                    success:function (res){
+                        if(res=="success"){
+                            alert("修改信息成功！");
+                        }
+                        else{
+                            alert("修改信息失败！");
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

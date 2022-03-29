@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网站视频</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" href="css/radio.css">
+</head>
+
+<body>
+    <!-- 加载每个页面的上导航 -->
+    <%- include("./childpage/topTitle.html",topNav,index,user) %>
+    <div class="r_content">
+        <p class="map"><i class="iconfont">&#xe6f8;</i><a href="/">首页</a><i
+                class="iconfont rightbtn">&#xe730;</i><span>视频教程</span></p>
+        <div class="radioinfo">
+            <div class="radio_type">
+                <p>类型：<a href="/radio?tid=0&cid=<%=cid%>" class="<%=tid==0?'a_active':''%>">免费</a><a
+                        href="/radio?tid=1&cid=<%=cid%>" class="<%=tid==1?'a_active':''%>">VIP会员</a></p>
+                <p>分类：<a href="/radio?tid=<%=tid%>&cid=0" class="<%=cid==0?'a_active':''%>">全部</a> <a
+                        href="/radio?tid=<%=tid%>&cid=1" class="<%=cid==1?'a_active':''%>">网页制作</a> <a
+                        href="/radio?tid=<%=tid%>&cid=2" class="<%=cid==2?'a_active':''%>">LayOut布局</a> <a
+                        href="/radio?tid=<%=tid%>&cid=3" class="<%=cid==3?'a_active':''%>">其它</a></p>
+            </div>
+            <div class="radio_c">
+                <p>想必有很多朋友：想自己做个网站或者博客。困惑的是：“不知道从哪里着手会比较好？”其实，不管是自学也好，还是参加培训班。我们首先得明白做一个网站的流程是什么？而不是别人说什么，我们就去学什么。</p>
+                <p>盲目的学习，导致的结果就是：浪费了不该浪费的时间和精力，同时也浪费了金钱。</p>
+                <p>免费试听以下教程，让你明白：原来做一个网站是如此的简单！</p>
+                <img src="image/video-info-bg.9fd9f93.jpg" alt="">
+            </div>
+            <div class="radio-info-list">
+                <%for(let i=0;i<radiolist.length;i++){%>
+                <div class="radio-msg">
+                    <a href="/radioweb?id=<%=radiolist[i].id%>">
+                        <img class="radimg"
+                            src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3236482161,41816748&fm=26&gp=0.jpg"
+                            alt="">
+                        <h4 title="<%=radiolist[i].name%>" class="title-h4">
+                            <%=radiolist[i].name%>
+                        </h4>
+                        <p class="info">
+                            <%=radiolist[i].detail%>
+                        </p>
+                        <p class="radio-s">
+                            <span class="radio-k"><span><%=radiolist[i].look%></span>人看过</span>
+                            <%if(!radiolist[i].isfree){%>
+                            <span class="radio-p">(免费看)<span>￥<%=radiolist[i].price%>元</span></span>
+                            <%}else{%>
+                            <span class="radio-p"><span>￥<%=radiolist[i].price%>元</span></span>
+                            <%}%>
+                            </p>
+                        </a>
+                    </div>
+                <%}%>
+                </div>
+                <div class="radio-page">
+                    <ul>
+                        <%for(let i=1;i<=count;i++){%>
+                        <li class="<%=nowpage==i?'active':''%>"><a
+                                href="/radio?tid=<%=tid%>&cid=<%=cid%>&page=<%=i%>"><%=i%></a></li>
+                        <%}%>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <strong>Design by</strong>：毛豆 备案号：<strong>ICP备12021335号-1</strong>
+    </div>
+</body>
+
+</html>

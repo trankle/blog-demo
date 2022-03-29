@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>留言板</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/iconfont.css">
+    <link rel="stylesheet" href="/css/message.css">
+</head>
+
+<body>
+    <!-- 加载每个页面的上导航 -->
+    <%- include("./childpage/topTitle.html",topNav,index,user) %>
+    <div class="content">
+        <p class="map">
+            <i class="iconfont">&#xe65d;</i>
+            <a href="/">首页</a>
+            <i class="iconfont">&#xe673;</i>
+            <span>留言板</span>
+        </p>
+        <div class=author>
+            <div class="authorleft">
+                <div class="comment-info">
+                    <div class="comment-sendmsg">
+                        <div class="face-logo">
+                            <img src="<%=userinfo.face%>" alt="">
+                            
+                        </div>
+                        <div class="send-msg">
+                            <textarea class="send-txt" placeholder="有什么想说的吗？"></textarea>
+                            <div class="send_btn">
+                                <i class="iconfont">&#xe8f6;</i>
+                                <span>表情</span>
+                                <%if(!userinfo){%>
+                                    <a id="btnlogin" href="javaScript:void(0)">点击登录</a>
+                                    <%}else{%>
+                                        <a id="sendmsg" href="javaScript:void(0)">点击发送</a>
+                                        <%}%>
+                                <script>
+                                    //点击登录
+                                    $(function () {
+                                        console.log("<%=userinfo%>");
+                                        $("#btnlogin").click(function () {
+                                            $("#login").trigger("click");
+                                        });
+                                        $("#sendmsg").click(function (){
+                                            //发送评论
+                                            let id="<%=userinfo.id%>";
+                                            let txt=$(".send-txt").val();
+                                            let time=new Date().toUTCString();
+                                            $.ajax({
+                                                method:"post",
+                                                data:{id:id,txt:txt,time:time},
+                                                url:"http://localhost:8000/sendmessage",
+                                                success:function (res){
+                                                    console.log(res);
+                                                }
+                                            });
+                                        });
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-list">
+                        <div class="comment-target">
+                            <span class="comment-num"><span id="commentnumber">5</span>条评论</span>
+                            <div class="comment-btn">
+                                <span class="comment-new">最新评论</span>
+                                <span class="comment-hot">最热评论</span>
+                            </div>
+                        </div>
+                        <div id="c-data">
+
+                        </div>
+                    </div>
+                    <script>
+                        // 加载完成之后获取ajax
+                        $(function () {
+                            let ele = $("#c-data");
+                            let elenum = $("#commentnumber");
+                            let way = null;
+                            getcomment(way);
+                            $(".comment-new").click(function () {
+                                way = "time";
+                                getcomment(way);
+                            });
+                            //最热
+                            $(".comment-hot").click(function () {
+                                way = "zan";
+                                getcomment(way);
+                            });
+                            function getcomment(way) {
+                                $.ajax({
+                                    method: "post",
+                                    data: { way: way },
+                                    url: "http://localhost:8000/getmessage",
+                                    success: function (res) {
+                                        elenum.html(res.length);
+                                        let str = "";
+                                        for (let i = 0; i < res.length; i++) {
+                                            let time = new Date(res[i].time); time = time.getFullYear()
+                                                + "年" + time.getMonth() + "月" + time.getDate() + "日" + " " + time.toLocaleTimeString(); str
+                                                    += `<div class=" comment-data"><img class="user-img" src="${res[i].face}" alt="">
+                            <div>
+                                <div class="nickname">${res[i].name}：</div>
+                                <div class="user-content">${res[i].content}</div>
+                                <div class="time">${time} <span class="zan"><i class="iconfont zanbtn"
+                                            data-id="${res[i].cid}">&#xe90b;</i><span class="zaninfo"
+                                            data-zan="${res[i].zan}">${res[i].zan}</span></span></div>
+                            </div>
+                            <div class="sendmsg">
+                            </div>
+                    </div>`;
+                                        }
+                                        ele.html(str);
+                                        for (let i = 0; i
+                                            < res.length; i++) {
+                                            let ss = ""; if (res[i].send.length != 0) {
+                                                for (let k = 0; k < res[i].send.length;
+                                                    k++) {
+                                                    let time = new Date(res[i].send[k].time); time = time.getFullYear() + "年" + time.getMonth()
+                                                        + "月" + time.getDate() + "日" + " " + time.toLocaleTimeString(); ss += ` <img class="sendface"
+                        src="${ res[i].send[k].face}" />
+                    <div class="nickname">${ res[i].send[k].name}：</div>
+                    <div class="user-content">${ res[i].send[k].content}</div>
+                    <div class="time">${time}
+                        <span class="zan"><i class="iconfont vzanbtn" data-zan="${res[i].send[k].zan}"
+                                data-id="${res[i].send[k].sid}">&#xe90b;</i><span
+                                >${res[i].send[k].zan}</span></span>
+                    </div>
+                    `;
+                                                }
+                                                $(".sendmsg").eq(i).html(ss);
+                                            }
+                                        }
+
+                                        $(".zanbtn").each(function (index) {
+                                            $(this).on("click", function () {
+                                                let comid = $(this).attr("data-id");
+                                                let num = parseInt($(".zaninfo").eq(index).attr("data-zan"));
+                                                $.ajax({
+                                                    method: "post",
+                                                    data: { id: comid, zan: ++num, tab: null },
+                                                    url: "http://localhost:8000/updatemessagezan",
+                                                    success: function (result) {
+                                                        if (result.affectedRows == 1) {
+                                                            getcomment(way);
+                                                        }
+                                                    }
+                                                });
+                                            });
+                                        });
+                                        $(".vzanbtn").click(function () {
+                                            let scomid = $(this).attr("data-id");
+                                            let num = parseInt($(this).attr("data-zan"));
+                                            $.ajax({
+                                                method: "post",
+                                                data: { id: scomid, zan: ++num, tab: "send" },
+                                                url: "http://localhost:8000/updatemessagezan",
+                                                success: function (result) {
+                                                    if (result.affectedRows == 1) {
+                                                        getcomment(way);
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    },
+                                    error: function (err) {
+                                        console.log(err);
+                                    }
+                                });
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="authorright">
+                <div class="search">
+                    <form class="formsearch" action="/searchinfo" method="get">
+                        <input type="text" class="searchipt" name="search" placeholder="请输入需要的内容">
+                        <i id="subbtn" class="iconfont">&#xe69f;</i>
+                        <script>
+                            // 表单提交代码
+                            $("#subbtn").click(function () {
+                                if ($(".searchipt").val().length != 0) {
+                                    $(".formsearch").submit();
+                                }
+                            });
+                        </script>
+                    </form>
+                </div>
+                <div class="quick_a">
+                    <ul>
+                        <li class="nav1"><a href="/author">关于我</a></li>
+                        <li class="nav2"><a href="/radio">视频教程</a></li>
+                        <li class="nav3"><a href="/blog">学无止境</a></li>
+                        <li class="nav4"><a href="/message">留言板</a></li>
+                    </ul>
+                </div>
+                <div class=hotinfo>
+                    <img src="/image/hot-recommend-img.d46cf12.png" alt="">
+                    <div class="u_click">
+                        <ul>
+                            <%for(let i=0;i<blogNumber.length;i++){%>
+                            <li><span class="<%=`sc${i+1}`%>"><%=i+1%></span>
+                                <a href="/detail?id=<%=blogNumber[i].id%>&ck=3"><%=blogNumber[i].name%></a>
+                            </li>
+                            <%}%>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

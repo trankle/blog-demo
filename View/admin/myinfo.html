@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的资料</title>
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/admin/myinfo.css">
+    <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <p class="myinfo">我的个人资料</p>
+    <div class="mylist">
+        <form action="/admin/updatemyinfo" method="POST" enctype="multipart/form-data">
+            <div class="box1">
+                <ul class="mynav">
+                    <li>姓名：<span name="name" class="ipt"><%=user.name%></span></li>
+                    <li>性别：<span name="sex" class="ipt"><%=user.sex%></span></li>
+                    <li>年龄：<span name="age" class="ipt"><%=user.age%></span></li>
+                    <li>地址：<span name="address" class="ipt"><%=user.address%></span></li>
+                    <li>工作：<span name="job" class="ipt"><%=user.job%></span></li>
+                    <li>邮箱：<span name="email" class="ipt"><%=user.email%></span></li>
+                    <li>密码：<span name="pwd" class="ipt"><%=user.pwd%></span></li>
+                    <li>简介：<br>
+                        <textarea class="area" name="detail"><%=user.detail%></textarea>
+                    </li>
+                </ul>
+            </div>
+            <div class="box2">
+                <p align="center">用户头像</p>
+                <img class="userface" src="<%=user.face%>" alt="">
+                <a href="#" class="btnface">
+                    点击这里上传
+                    <input name="face" class="btnload" type="file">
+                </a>
+
+            </div>
+            <div class="box3">
+                <p align="center">用户照片</p>
+                <img class="userface" src="<%=user.photo%>" alt="">
+                <a href="#" class="btnface">
+                    点击这里上传
+                    <input name="photo" class="btnload" type="file">
+                </a>
+            </div>
+            <div class="btn">
+                <input type="button" data-change=false class="changebtn" value="切换修改">
+                <input type="button" id="subbtn" value="点击修改">
+            </div>
+        </form>
+        <script>
+            $(function () {
+                //ajax
+                $(".changebtn").click(function () {
+                    let change = $(this).attr("data-change");
+                    if (change == "false") {
+                        $(this).attr("data-change", "true");
+                    }
+                    else {
+                        $(this).attr("data-change", "false");
+                    }
+
+                });
+                $("#subbtn").click(function () {
+                    let change = $(".changebtn").attr("data-change");
+                    if (change == "true") {
+                        let id = "<%=user.id%>";
+                        let name = $(".ipt").eq(0).val();
+                        let sex = $(".ipt").eq(1).val();
+                        let age = $(".ipt").eq(2).val();
+                        let address = $(".ipt").eq(3).val();
+                        let job = $(".ipt").eq(4).val();
+                        let email = $(".ipt").eq(5).val();
+                        let pwd = $(".ipt").eq(6).val();
+                        let detail = $(".area").val();
+                        let face = $(".btnload")[0].files[0];
+                        let photo = $(".btnload")[1].files[0];
+                        let from = new FormData();
+                        from.append("id", id);
+                        from.append("name", name);
+                        from.append("sex", sex);
+                        from.append("age", age);
+                        from.append("address", address);
+                        from.append("job", job);
+                        from.append("email", email);
+                        from.append("pwd", pwd);
+                        from.append("detail", detail);
+                        from.append("face", face);
+                        from.append("photo", photo);
+                        //ajax
+                        $.ajax({
+                            method: "post",
+                            data: from,
+                            url: "http://localhost:8000/admin/updatemyinfo",
+                            processData: false,
+                            contentType: false,
+                            success: function (res) {
+                                if (res == "error") {
+                                    alert("修改失败！");
+                                }
+                                else {
+                                    alert("修改成功！");
+                                    let user = res[0];
+                                    $(".ipt").eq(0).val(user.name);
+                                    $(".ipt").eq(1).val(user.sex);
+                                    $(".ipt").eq(2).val(user.age);
+                                    $(".ipt").eq(3).val(user.address);
+                                    $(".ipt").eq(4).val(user.job);
+                                    $(".ipt").eq(5).val(user.email);
+                                    $(".ipt").eq(6).val(user.pwd);
+                                    $(".area").val(user.detail);
+                                    $(".userface").eq(0).attr("src",user.face);
+                                    $(".userface").eq(1).attr("src",user.photo);
+                                    $(".changebtn").trigger("click");
+                                    
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        //提示
+                        alert("请先切换状态！");
+                    }
+                });
+
+                $(".btnload").each(function (index) {
+                    $(this).change(function () {
+                        let file = $(this)[0].files[0];
+                        if (file.type.indexOf("image") == 0) {
+                            let reader = new FileReader();
+                            reader.readAsDataURL(file);
+                            reader.onload = function () {
+                                $(".userface").eq(index).attr("src", this.result);
+                            }
+                        }
+                        else {
+                            alert("确认上传图片！");
+                        }
+                    });
+                });
+                let ischange = false;
+                $(".changebtn").click(function () {
+                    if (ischange) {
+                        $(".ipt").each(function () {
+                            let text = $(this).val();
+                            let name = $(this).attr("name");
+                            $(this).replaceWith(`<span name='${name}' class='ipt'>${text}</span>`)
+                        });
+                        ischange = false;
+                    }
+                    else {
+                        $(".ipt").each(function () {
+                            let text = $(this).html();
+                            let name = $(this).attr("name");
+                            $(this).replaceWith(`<input name='${name}' class='ipt' type='text' value='${text}'/>`)
+                        });
+                        ischange = true;
+                    }
+
+                });
+            });
+        </script>
+    </div>
+</body>
+
+</html>

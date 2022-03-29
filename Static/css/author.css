@@ -1,0 +1,150 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-color: #ececec;
+    border-top: 1px solid transparent;
+}
+.content{
+    margin: 110px auto 15px;
+    width: 1180px;
+    min-height: 30px;
+}
+.map{
+    padding: 20px 0;
+    font-size: 14px;
+}
+.author{
+    width: 1180px;
+    margin: auto;
+}
+.authorleft{
+    position: relative;
+    width: 860px;
+    height: auto;
+    float: left;
+    background-color: #fff;
+    box-sizing: border-box;
+    padding: 20px 10px;
+}
+.userphoto{
+    float: left;
+    width: 300px;
+    border: 1px solid #c0c0c0;
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.detail{
+    float: left;
+    font-size: 14px;
+    width: 530px;
+}
+.detail h3{
+    margin: 0 0 10px;
+}
+.detail p{
+    text-indent: 30px;
+    line-height: 23px;
+}
+.authorright{
+    width: 290px;
+    height: 200px;
+    float: right;
+}
+
+.search {
+    position: relative;
+    background-color: #fff;
+    padding: 20px 0;
+    margin: 0 0 20px;
+    text-align: center;
+}
+
+.search input {
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #ccc;
+    padding: 0 35px 0 20px;
+    font-size: 14px;
+    outline: none;
+}
+
+::-webkit-input-placeholder {
+    color: #ccc;
+    font-size: 14px;
+}
+
+.search i {
+    cursor: pointer;
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    font-size: 20px;
+    color: #000;
+}
+
+.quick_a {
+    background-color: #fff;
+    padding: 20px 0 13px;
+    margin-bottom: 15px;
+}
+
+.quick_a>ul {
+    padding-left: 10px;
+    overflow: hidden;
+}
+
+.quick_a>ul>li {
+    list-style: none;
+    text-align: center;
+    line-height: 50px;
+    float: left;
+    width: 110px;
+    height: 50px;
+    margin: 0 10px 15px;
+    border-radius: 5px;
+}
+
+.quick_a>ul>li a {
+    display: block;
+    width: 110px;
+    height: 50px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.nav1 {
+    background-color: #666;
+}
+
+.nav2 {
+    background-color: #0cc;
+}
+
+.nav3 {
+    background-color: #c96;
+}
+
+.nav4 {
+    background-color: #666;
+}
+.authorinfo{
+    background-color: #fff;
+    padding-bottom: 10px;
+}
+.info{
+    border-left: 2px solid #0ba6ee;
+    padding-left: 10px;
+    font-size: 15px;
+    line-height: 30px;
+}
+.authorinfo li{
+    list-style: none;
+    padding-left: 12px;
+    font-size: 14px;
+    line-height: 30px;
+}

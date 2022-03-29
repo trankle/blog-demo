@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理系统主界面</title>
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/admin/admin.css">
+    <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="title">
+        <div>
+            <img class="logo" src="<%=logo.logo%>" alt="">
+        </div>
+        <div>
+            欢迎<span><%=user.name%></span>登录，<a href="/admin/amdinclose">退出</a>
+        </div>
+    </div>
+    <div class="content">
+        <div class="nav">
+            <ul class="menu">
+                <li class="adminck"><a href="/admin/myinfo" target="targetdata">我的资料</a></li>
+                <li><a href="/admin/setbanner" target="targetdata">设置轮播</a></li>
+                <li><a href="/admin/setlogo" target="targetdata">设置logo</a></li>
+                <li><a href="/admin/setmenu" target="targetdata">设置菜单</a></li>
+                <li><a href="/admin/uploadblog" target="targetdata">上传博客</a></li>
+                <li><a href="/admin/uploadvideo" target="targetdata">上传视频</a></li>
+                <li><a href="/admin/setvideo" target="targetdata">视频管理</a></li>
+                <li><a href="/admin/sendmessage" target="targetdata">回复留言</a></li>
+                <li><a href="/admin/setuser" target="targetdata">用户管理</a></li>
+            </ul>
+        </div>
+        <script>
+            $(function (){
+                $(".menu>li").click(function (){
+                    $(this).addClass("adminck").siblings().removeClass("adminck");
+                });
+            });
+        </script>
+        <div class="txt">
+            <iframe name="targetdata" src="./myinfo" class="ifbox" frameborder="0"></iframe>
+        </div>
+    </div>
+</body>
+</html>
